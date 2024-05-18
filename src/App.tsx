@@ -46,7 +46,7 @@ function App() {
                   }}
                 >
                   <PauseIcon />
-                  <p>Pausar</p>
+                  <p className="text-bold">Pausar</p>
                 </Button>
               )}
               <Button
@@ -63,7 +63,15 @@ function App() {
           </Card>
         </main>
         <footer className="flex px-12 justify-end pb-2">
-          <p className="text-lg">Made with ❤️ by Cauã Tavares</p>
+          <p className="text-lg">
+            Made with ❤️ by{" "}
+            <a
+              href="https://github.com/Cauatn"
+              className="hover:cursor-pointer text-bold underline underline-offset-4"
+            >
+              Cauã Tavares
+            </a>
+          </p>
         </footer>
       </div>
     </ThemeProvider>
