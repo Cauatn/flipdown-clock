@@ -6,8 +6,11 @@ import Clock from "./components/Clock.js";
 import { Button } from "./components/ui/button.js";
 import { PauseIcon, PlayIcon, Undo2Icon } from "lucide-react";
 import { Start, Stop, Reset } from "./script.js";
+import { useState } from "react";
 
 function App() {
+  const [isRunning, setIsRunning] = useState(false);
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="h-screen w-screen max-w-7xl flex flex-col justify-between">
@@ -22,32 +25,44 @@ function App() {
             >
               <Clock />
             </CardContent>
-            <CardFooter className="space-x-2 flex justify-end h-fit">
+            <CardFooter className="space-x-2 flex justify-end h-fit px-0">
+              {!isRunning ? (
+                <Button
+                  className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black "
+                  onClick={() => {
+                    Start();
+                    setIsRunning(true);
+                  }}
+                >
+                  <PlayIcon />
+                  <p className="text-bold">Iniciar</p>
+                </Button>
+              ) : (
+                <Button
+                  className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2"
+                  onClick={() => {
+                    Stop();
+                    setIsRunning(false);
+                  }}
+                >
+                  <PauseIcon />
+                  <p>Pausar</p>
+                </Button>
+              )}
               <Button
-                className="bg-green-400 dark:bg-green-400 hover:cursor-pointer"
-                onClick={() => Start()}
-              >
-                <PlayIcon />
-                <p>Começar</p>
-              </Button>
-              <Button
-                className="bg-yellow-400 dark:bg-yellow-400 hover:cursor-pointer"
-                onClick={() => Stop()}
-              >
-                <PauseIcon />
-                <p>Pausar</p>
-              </Button>
-              <Button
-                className="bg-gray-400 dark:bg-gray-400 hover:cursor-pointer"
-                onClick={() => Reset()}
+                className="bg-gray-600 dark:bg-gray-400 hover:cursor-pointer flex items-center justify-center [&>svg]:mr-2 text-black"
+                onClick={() => {
+                  Reset();
+                  setIsRunning(false);
+                }}
               >
                 <Undo2Icon />
-                <p>Resetar</p>
+                <p className="text-bold">Redefinir</p>
               </Button>
             </CardFooter>
           </Card>
         </main>
-        <footer className="flex px-8 justify-end pb-2">
+        <footer className="flex px-12 justify-end pb-2">
           <p className="text-lg">Made with ❤️ by Cauã Tavares</p>
         </footer>
       </div>

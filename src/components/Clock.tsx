@@ -3,7 +3,7 @@ import "@/script.js";
 
 function Clock() {
   return (
-    <div className="container-box space-x-5">
+    <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex lg:flex-row lg:justify-center lg:items-center lg:container lg:space-x-5 lg:container-box">
       <div className="container-segment">
         <div className="segment text-[12rem]">
           <div className="flip-card" data-hours-tens>
