@@ -28,7 +28,7 @@ function App() {
             <CardFooter className="space-x-2 flex justify-end h-fit px-0">
               {!isRunning ? (
                 <Button
-                  className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black "
+                  className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
                   onClick={() => {
                     Start();
                     setIsRunning(true);
@@ -39,7 +39,7 @@ function App() {
                 </Button>
               ) : (
                 <Button
-                  className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2"
+                  className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
                   onClick={() => {
                     Stop();
                     setIsRunning(false);
