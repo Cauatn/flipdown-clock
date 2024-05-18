@@ -1,14 +1,7 @@
 import "@/App.css";
 import { ModeToggle } from "./components/mode-toggle";
 import { ThemeProvider } from "./components/theme-provider";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./components/ui/card.js";
+import { Card, CardContent, CardFooter } from "./components/ui/card.js";
 import Clock from "./components/Clock.js";
 import { Button } from "./components/ui/button.js";
 import { PauseIcon, PlayIcon, Undo2Icon } from "lucide-react";

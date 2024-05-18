@@ -10,16 +10,7 @@ import {
 import { useTheme } from "@/components/theme-provider";
 
 export function ModeToggle() {
-  const { setTheme, theme } = useTheme();
-
-  function switchTheme() {
-    let body = document.body;
-    let flipdownElement = body.querySelector("#flipdown");
-    if (flipdownElement) {
-      flipdownElement.classList.toggle("flipdown__theme-dark");
-      flipdownElement.classList.toggle("flipdown__theme-light");
-    }
-  }
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -32,21 +23,17 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
+          className="dark:hover:bg-slate-900/90"
           onClick={() => {
-            if (theme === "dark") {
-              setTheme("light");
-              switchTheme();
-            }
+            setTheme("light");
           }}
         >
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
+          className="dark:hover:bg-slate-900/90"
           onClick={() => {
-            if (theme === "light") {
-              setTheme("dark");
-              switchTheme();
-            }
+            setTheme("dark");
           }}
         >
           Dark
