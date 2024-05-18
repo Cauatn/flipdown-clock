@@ -9,7 +9,7 @@ import { Start, Stop, Reset } from "./script.js";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="h-screen w-screen max-w-7xl flex flex-col justify-between">
         <header className="justify-end sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-row items-center p-2">
           <ModeToggle />
