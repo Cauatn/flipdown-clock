@@ -24,21 +24,21 @@ function App() {
             </CardContent>
             <CardFooter className="space-x-2 flex justify-end h-fit">
               <Button
-                className="bg-green-400 dark:bg-green-400"
+                className="bg-green-400 dark:bg-green-400 hover:cursor-pointer"
                 onClick={() => Start()}
               >
                 <PlayIcon />
                 <p>Começar</p>
               </Button>
               <Button
-                className="bg-yellow-400 dark:bg-yellow-400"
+                className="bg-yellow-400 dark:bg-yellow-400 hover:cursor-pointer"
                 onClick={() => Stop()}
               >
                 <PauseIcon />
                 <p>Pausar</p>
               </Button>
               <Button
-                className="bg-gray-400 dark:bg-gray-400"
+                className="bg-gray-400 dark:bg-gray-400 hover:cursor-pointer"
                 onClick={() => Reset()}
               >
                 <Undo2Icon />
