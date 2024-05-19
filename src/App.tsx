@@ -17,7 +17,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import { Start, Stop, Reset } from "./script.js";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
           <Card className="container rounded-lg border border-spacing-0 h-full flex justify-between flex-col">
             <CardHeader className="flex justify-center items-end">
               <button
-                onClick={(e) => {
+                onClick={() => {
                   if (!isFullScreen) {
                     handle.enter();
                     setisFullscreen(true);
