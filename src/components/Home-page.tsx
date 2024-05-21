@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import {
   Card,
   CardContent,
@@ -15,20 +14,14 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import { Start, Stop, Reset } from "../script.js";
-import { useCallback, useState } from "react";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { ModeToggle } from "../components/mode-toggle";
-import {
-  SessionContext,
-  useSessionContext,
-} from "@/context/Session-Context.tsx";
+import { useSessionContext } from "@/contexts/SessionContext/Session-Context.js";
 
 function Homepage() {
   const { isFullScreen, setIsRunning, setisFullscreen, isRunning, handle } =
     useSessionContext();
 
   return (
-    <main className="space-y-4 h-full py-2 px-4 ">
+    <main className="space-y-4 h-full py-2 px-4">
       <Card className="container rounded-lg border border-spacing-0 h-full flex justify-between flex-col">
         <CardHeader className="flex justify-center items-end">
           <button

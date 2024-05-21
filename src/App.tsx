@@ -12,9 +12,10 @@ import Homepage from "./components/Home-page";
 import { ModeToggle } from "./components/mode-toggle";
 import { Button } from "./components/ui/button";
 import { useCallback, useState } from "react";
-import { useSessionContext } from "./context/Session-Context";
+import { useSessionContext } from "./contexts/SessionContext/Session-Context";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import Pomodoro from "./components/Pomodoro";
+import { Sprout } from "lucide-react";
 
 function App() {
   return (
@@ -44,7 +45,13 @@ function Layout() {
             {!isFullScreen ? (
               <div className="flex space-x-3">
                 <a href="/pomodoro">
-                  <Button className="text-base font-bold ">Pomodoro</Button>
+                  <Button
+                    className="text-base font-bold size-10"
+                    variant="outline"
+                  >
+                    <Sprout className="absolute size-5 dark:rotate-0 dark:scale-100" />
+                    <span className="sr-only">Pomodoro Page</span>
+                  </Button>
                 </a>
                 <ModeToggle />
               </div>
