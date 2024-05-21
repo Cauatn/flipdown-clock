@@ -1,22 +1,8 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { useFullScreenHandle } from "react-full-screen";
+import { ISessionContext } from "@/contexts/SessionContext/types";
 
-export type SessionContext = {
-  isRunning: boolean;
-  isFullScreen: boolean;
-  setIsRunning: (value: boolean) => void;
-  setisFullscreen: (value: boolean) => void;
-  reportChange: (state: any) => void;
-  handle: any;
-};
-
-const SessionContext = createContext<SessionContext | null>(null);
+const SessionContext = createContext<ISessionContext | null>(null);
 
 export const SessionProvider = ({ children }: any) => {
   const [isRunning, setIsRunning] = useState(false);
