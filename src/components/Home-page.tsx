@@ -13,12 +13,16 @@ import {
   PlayIcon,
   Undo2Icon,
 } from "lucide-react";
-import { Start, Stop, Reset } from "../script.js";
 import { useSessionContext } from "@/contexts/SessionContext/Session-Context.js";
+import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
+
+const createWorker = createWorkerFactory(() => import("./worker"));
 
 function Homepage() {
   const { isFullScreen, setIsRunning, setisFullscreen, isRunning, handle } =
     useSessionContext();
+
+  const worker = useWorker(createWorker);
 
   return (
     <main className="space-y-4 h-full py-2 px-4">
@@ -49,7 +53,7 @@ function Homepage() {
             <Button
               className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
               onClick={() => {
-                Start();
+                worker.Start();
                 setIsRunning(true);
               }}
             >
@@ -60,7 +64,7 @@ function Homepage() {
             <Button
               className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
               onClick={() => {
-                Stop();
+                worker.Stop();
                 setIsRunning(false);
               }}
             >
@@ -71,7 +75,7 @@ function Homepage() {
           <Button
             className="bg-gray-600 dark:bg-gray-400 hover:cursor-pointer flex items-center justify-center [&>svg]:mr-2 text-black"
             onClick={() => {
-              Reset();
+              worker.Reset();
               setIsRunning(false);
             }}
           >
