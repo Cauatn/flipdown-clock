@@ -11,7 +11,6 @@ export const SessionProvider = ({ children }: any) => {
   const handle = useFullScreenHandle();
 
   const reportChange = useCallback((state: any) => {
-    console.log(state);
     if (state === true) {
       setisFullscreen(true);
     } else if (state === false) {

@@ -2,7 +2,7 @@ import "@/App.css";
 import { ThemeProvider } from "./components/theme-provider";
 
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import Homepage from "./components/Home-page";
+import Homepage from "./pages/HomePage/Home-page";
 import { ModeToggle } from "./components/mode-toggle";
 import { Button } from "./components/ui/button";
 import { useSessionContext } from "./contexts/SessionContext/Session-Context";

@@ -3,9 +3,9 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "../components/ui/card.js";
-import Clock from "../components/Clock.js";
-import { Button } from "../components/ui/button.js";
+} from "../../components/ui/card.js";
+import Clock from "../../components/Clock.js";
+import { Button } from "../../components/ui/button.js";
 import {
   Maximize2,
   Minimize2,
@@ -16,13 +16,39 @@ import {
 import { useSessionContext } from "@/contexts/SessionContext/Session-Context.js";
 import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 
-const createWorker = createWorkerFactory(() => import("./worker"));
+import worker_script from "../../js/worker-script.js";
+import { useEffect } from "react";
+("./worker-script.js");
+
+const timerWorker = new Worker(worker_script);
+const createWorker = createWorkerFactory(() => import("../../js/worker.js"));
 
 function Homepage() {
   const { isFullScreen, setIsRunning, setisFullscreen, isRunning, handle } =
     useSessionContext();
 
   const worker = useWorker(createWorker);
+
+  useEffect(() => {
+    timerWorker.onmessage = ({ data: { time } }) => {
+      if (time) {
+        worker.Start(time);
+      }
+    };
+  }, []);
+
+  const startWebWorkerTimer = () => {
+    timerWorker.postMessage({ turn: "on" });
+  };
+
+  const stopWebWorkerTime = () => {
+    timerWorker.postMessage({ turn: "pause" });
+  };
+
+  const resetWebWorkerTimer = () => {
+    timerWorker.postMessage({ turn: "off" });
+    worker.Stop();
+  };
 
   return (
     <main className="space-y-4 h-full py-2 px-4">
@@ -53,7 +79,7 @@ function Homepage() {
             <Button
               className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
               onClick={() => {
-                worker.Start();
+                startWebWorkerTimer();
                 setIsRunning(true);
               }}
             >
@@ -64,7 +90,7 @@ function Homepage() {
             <Button
               className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
               onClick={() => {
-                worker.Stop();
+                stopWebWorkerTime();
                 setIsRunning(false);
               }}
             >
@@ -75,7 +101,7 @@ function Homepage() {
           <Button
             className="bg-gray-600 dark:bg-gray-400 hover:cursor-pointer flex items-center justify-center [&>svg]:mr-2 text-black"
             onClick={() => {
-              worker.Reset();
+              resetWebWorkerTimer();
               setIsRunning(false);
             }}
           >

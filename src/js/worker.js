@@ -1,33 +1,10 @@
-let time = 0;
-let started = false;
-let stoped = false;
-
-export function Start() {
-  started = true;
-  console.log("Start");
+export function Start(time) {
+  flipAllCards(time);
 }
 
 export function Stop() {
-  started = false;
-  console.log("Stop");
+  flipAllCards(0);
 }
-
-export function Reset() {
-  time = 0;
-  flipAllCards(time);
-  started = false;
-
-  console.log("Reset");
-}
-
-setInterval(() => {
-  if (started) {
-    if (!stoped) {
-      time++;
-      flipAllCards(time);
-    }
-  }
-}, 1000);
 
 function flipAllCards(time) {
   const seconds = time % 60;

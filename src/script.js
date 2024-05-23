@@ -4,6 +4,7 @@ let time = 0;
 let started = false;
 let stoped = false;
 let startedPomodoro = false;
+let stopedPomodoro = false;
 let studyTime = 0;
 let isRest = false;
 
@@ -16,6 +17,7 @@ export function Start() {
 
 export function StartPomodoro(time) {
   startedPomodoro = true;
+  started = false;
   studyTime = time;
   console.log("Start Pomodoro");
 }
@@ -23,6 +25,11 @@ export function StartPomodoro(time) {
 export function Stop() {
   started = false;
   console.log("Stop");
+}
+
+export function StopPomodoro() {
+  startedPomodoro = false;
+  console.log("Stop Pomodoro");
 }
 
 export function Reset() {
@@ -42,15 +49,14 @@ setInterval(() => {
   }
 
   if (startedPomodoro) {
-    if (!stoped && studyTime > 0) {
+    if (!stopedPomodoro && studyTime > 0) {
       studyTime--;
+      console.log("asasdadsdadas");
       flipAllCards(studyTime);
-    } else {
-      if (studyTime == 0 && !isRest) {
-        StartRest(1200);
-        isRest = true;
-        console.log("Start Rest");
-      }
+    } else if (studyTime == 0 && !isRest) {
+      //StartRest(1200);
+      isRest = true;
+      console.log("Start Rest");
     }
   }
 }, 1000);
