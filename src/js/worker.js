@@ -1,9 +1,16 @@
+let clockTime = 0;
+
 export function Start(time) {
   flipAllCards(time);
+  clockTime = time;
 }
 
 export function Stop() {
   flipAllCards(0);
+}
+
+export function GetTime() {
+  return clockTime;
 }
 
 function flipAllCards(time) {

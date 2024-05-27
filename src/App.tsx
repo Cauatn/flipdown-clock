@@ -8,7 +8,8 @@ import { Button } from "./components/ui/button";
 import { useSessionContext } from "./contexts/SessionContext/Session-Context";
 import { FullScreen } from "react-full-screen";
 import Pomodoro from "./components/Pomodoro";
-import { Sprout } from "lucide-react";
+import { Flower, Sprout } from "lucide-react";
+import StatusPage from "./pages/StatusPage/Status-Page";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Homepage />} />
           <Route path="/pomodoro" element={<Pomodoro />} />
+          <Route path="/status" element={<StatusPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -43,7 +45,17 @@ function Layout() {
                     className="text-base font-bold size-10"
                     variant="outline"
                   >
-                    <Sprout className="absolute size-5 dark:rotate-0 dark:scale-100" />
+                    <Flower className="absolute size-5 dark:rotate-0 dark:scale-100 " />
+                    <span className="sr-only">Status page</span>
+                  </Button>
+                </a>
+                <a href="/">
+                  <Button
+                    disabled
+                    className="text-base font-bold size-10"
+                    variant="outline"
+                  >
+                    <Sprout className="absolute size-5 dark:rotate-0 dark:scale-100 " />
                     <span className="sr-only">Pomodoro Page</span>
                   </Button>
                 </a>
