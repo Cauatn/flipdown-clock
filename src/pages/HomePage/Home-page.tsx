@@ -74,14 +74,6 @@ function Homepage() {
           className="p-8 flex justify-center items-center space-x-2 h-full"
         >
           <Clock />
-          <button
-            onClick={() => {
-              //saveSessionTime(1);
-              console.log(worker.GetTime());
-            }}
-          >
-            a
-          </button>
         </CardContent>
         <CardFooter className="space-x-2 flex justify-end h-fit px-0">
           {!isRunning ? (
