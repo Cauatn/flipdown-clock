@@ -18,7 +18,6 @@ import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 
 import worker_script from "../../js/worker-script.js";
 import { useEffect } from "react";
-import saveSessionTime from "@/hooks/saveSessionTime.js";
 ("./worker-script.js");
 
 const timerWorker = new Worker(worker_script);
