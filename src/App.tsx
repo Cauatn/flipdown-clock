@@ -39,7 +39,7 @@ function Layout() {
           <header className="justify-end sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-row items-center p-2">
             {!isFullScreen ? (
               <div className="flex space-x-3">
-                <a href="/">
+                <a href="/" className="hidden">
                   <Button
                     disabled
                     className="text-base font-bold size-10"
@@ -49,7 +49,7 @@ function Layout() {
                     <span className="sr-only">Status page</span>
                   </Button>
                 </a>
-                <a href="/">
+                <a href="/" className="hidden">
                   <Button
                     disabled
                     className="text-base font-bold size-10"

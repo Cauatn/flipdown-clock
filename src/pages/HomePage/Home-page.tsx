@@ -30,15 +30,25 @@ function Homepage() {
   const worker = useWorker(createWorker);
 
   useEffect(() => {
+    const last_time = localStorage.getItem("last_time");
+
+    if (last_time) {
+      worker.Start(last_time);
+    }
+
     timerWorker.onmessage = ({ data: { time } }) => {
       if (time) {
         worker.Start(time);
+        localStorage.setItem("last_time", time);
       }
     };
   }, []);
 
   const startWebWorkerTimer = () => {
-    timerWorker.postMessage({ turn: "on" });
+    timerWorker.postMessage({
+      turn: "on",
+      last_time: localStorage.getItem("last_time"),
+    });
   };
 
   const stopWebWorkerTime = () => {
@@ -48,6 +58,7 @@ function Homepage() {
   const resetWebWorkerTimer = () => {
     timerWorker.postMessage({ turn: "off" });
     worker.Stop();
+    localStorage.setItem("last_time", "0");
   };
 
   return (

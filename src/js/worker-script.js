@@ -4,11 +4,16 @@ const workercode = () => {
   let timerInterval;
   let time = 0;
 
-  self.onmessage = function ({ data: { turn } }) {
+  self.onmessage = function ({ data: { turn, last_time } }) {
     if (turn === "off") {
       clearInterval(timerInterval);
       time = 0;
     } else if (turn === "on") {
+      if (last_time) {
+        time = Number(last_time);
+        console.log("resumed:", time);
+      }
+
       timerInterval = setInterval(() => {
         time += 1;
         self.postMessage({ time });
