@@ -8,6 +8,8 @@ export const SessionProvider = ({ children }: any) => {
   const [isRunning, setIsRunning] = useState(false);
   const [isFullScreen, setisFullscreen] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handle = useFullScreenHandle();
 
   const reportChange = useCallback((state: any) => {
@@ -27,6 +29,8 @@ export const SessionProvider = ({ children }: any) => {
         setisFullscreen,
         reportChange,
         handle,
+        isModalOpen,
+        setIsModalOpen,
       }}
     >
       {children}

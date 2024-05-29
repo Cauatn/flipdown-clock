@@ -8,7 +8,7 @@ import { Button } from "./components/ui/button";
 import { useSessionContext } from "./contexts/SessionContext/Session-Context";
 import { FullScreen } from "react-full-screen";
 import Pomodoro from "./components/Pomodoro";
-import { Flower, Sprout } from "lucide-react";
+import { Flower, List, Sprout } from "lucide-react";
 import StatusPage from "./pages/StatusPage/Status-Page";
 
 function App() {
@@ -26,7 +26,8 @@ function App() {
 }
 
 function Layout() {
-  const { isFullScreen, handle, reportChange } = useSessionContext();
+  const { isFullScreen, handle, reportChange, setIsModalOpen } =
+    useSessionContext();
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -38,7 +39,7 @@ function Layout() {
         <div className="flex flex-col h-screen justify-between">
           <header className="justify-end sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-row items-center p-2">
             {!isFullScreen ? (
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 mx-2">
                 <a href="/" className="hidden">
                   <Button
                     disabled
@@ -59,6 +60,14 @@ function Layout() {
                     <span className="sr-only">Pomodoro Page</span>
                   </Button>
                 </a>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="border"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <List className="h-[1.2rem] w-[1.2rem]" />
+                </Button>
                 <ModeToggle />
               </div>
             ) : null}
