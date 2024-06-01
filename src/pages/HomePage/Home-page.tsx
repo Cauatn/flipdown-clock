@@ -18,30 +18,16 @@ import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 
 import worker_script from "../../js/worker-script.js";
 import { useEffect } from "react";
-import { Drawer, DrawerContent } from "@/components/ui/drawer.js";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table.js";
+import SessionsList from "@/components/SessionsList.js";
+
 ("./worker-script.js");
 
 const timerWorker = new Worker(worker_script);
 const createWorker = createWorkerFactory(() => import("../../js/worker.js"));
 
 function Homepage() {
-  const {
-    isFullScreen,
-    setIsRunning,
-    setisFullscreen,
-    isRunning,
-    handle,
-    isModalOpen,
-    setIsModalOpen,
-  } = useSessionContext();
+  const { isFullScreen, setIsRunning, setisFullscreen, isRunning, handle } =
+    useSessionContext();
 
   const worker = useWorker(createWorker);
 
@@ -153,44 +139,7 @@ function Homepage() {
             <Undo2Icon />
             <p className="text-bold">Redefinir</p>
           </Button>
-          <Drawer open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <DrawerContent className="max-w-80 h-full p-4 space-y-4">
-              <Table className="border">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Horas feitas</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {JSON.parse(localStorage.getItem("time_list") ?? "[]").map(
-                    (element: any, index: number) => (
-                      <TableRow
-                        key={index}
-                        onClick={(_e) => {
-                          const list = localStorage.getItem("time_list");
-
-                          if (list) {
-                            const new_list = JSON.parse(list);
-                            new_list.splice(index, 1);
-                            localStorage.setItem(
-                              "time_list",
-                              JSON.stringify(new_list)
-                            );
-                          }
-                        }}
-                      >
-                        <TableCell>{element.date}</TableCell>
-                        <TableCell>
-                          {Math.floor(element.time / 3600)} h
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </DrawerContent>
-          </Drawer>
+          <SessionsList />
         </CardFooter>
       </Card>
     </main>
