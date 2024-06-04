@@ -19,6 +19,7 @@ import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 import worker_script from "../../js/worker-script.js";
 import { useEffect } from "react";
 import SessionsList from "@/components/SessionsList.js";
+import { newTimeInList } from "@/hooks/new-time.js";
 
 ("./worker-script.js");
 
@@ -26,7 +27,7 @@ const timerWorker = new Worker(worker_script);
 const createWorker = createWorkerFactory(() => import("../../js/worker.js"));
 
 function Homepage() {
-  const { isFullScreen, setIsRunning, setisFullscreen, isRunning, handle } =
+  const { isFullScreen, setisFullscreen, isRunning, handle } =
     useSessionContext();
 
   const worker = useWorker(createWorker);
@@ -45,41 +46,6 @@ function Homepage() {
       }
     };
   }, []);
-
-  const startWebWorkerTimer = () => {
-    timerWorker.postMessage({
-      turn: "on",
-      last_time: localStorage.getItem("last_time"),
-    });
-  };
-
-  const stopWebWorkerTime = () => {
-    timerWorker.postMessage({ turn: "pause" });
-  };
-
-  const resetWebWorkerTimer = async () => {
-    timerWorker.postMessage({ turn: "off" });
-    worker.Stop();
-
-    const get_time = await worker.GetTime();
-
-    const new_element = {
-      date: new Date().toDateString(),
-      time: get_time,
-    };
-
-    if (localStorage.getItem("time_list") === null) {
-      localStorage.setItem("time_list", JSON.stringify([new_element]));
-    } else {
-      const new_list = JSON.parse(localStorage.getItem("time_list") ?? "");
-      localStorage.setItem(
-        "time_list",
-        JSON.stringify([...new_list, new_element])
-      );
-    }
-
-    localStorage.setItem("last_time", "0");
-  };
 
   return (
     <main className="space-y-4 h-full py-2 px-4">
@@ -106,43 +72,85 @@ function Homepage() {
           <Clock />
         </CardContent>
         <CardFooter className="space-x-2 flex justify-end h-fit px-0">
-          {!isRunning ? (
-            <Button
-              className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
-              onClick={() => {
-                startWebWorkerTimer();
-                setIsRunning(true);
-              }}
-            >
-              <PlayIcon />
-              <p className="text-bold">Iniciar</p>
-            </Button>
-          ) : (
-            <Button
-              className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
-              onClick={() => {
-                stopWebWorkerTime();
-                setIsRunning(false);
-              }}
-            >
-              <PauseIcon />
-              <p className="text-bold">Pausar</p>
-            </Button>
-          )}
-          <Button
-            className="bg-gray-600 dark:bg-gray-400 hover:cursor-pointer flex items-center justify-center [&>svg]:mr-2 text-black"
-            onClick={() => {
-              resetWebWorkerTimer();
-              setIsRunning(false);
-            }}
-          >
-            <Undo2Icon />
-            <p className="text-bold">Redefinir</p>
-          </Button>
+          {!isRunning ? <InitButton /> : <PauseButton />}
+          <ResetButton />
           <SessionsList />
         </CardFooter>
       </Card>
     </main>
+  );
+}
+
+function InitButton() {
+  const { setIsRunning } = useSessionContext();
+
+  const startWebWorkerTimer = () => {
+    timerWorker.postMessage({
+      turn: "on",
+      last_time: localStorage.getItem("last_time"),
+    });
+  };
+
+  return (
+    <Button
+      className="bg-green-600 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
+      onClick={() => {
+        startWebWorkerTimer();
+        setIsRunning(true);
+      }}
+    >
+      <PlayIcon />
+      <p className="text-bold">Iniciar</p>
+    </Button>
+  );
+}
+
+function PauseButton() {
+  const { setIsRunning } = useSessionContext();
+
+  const stopWebWorkerTime = () => {
+    timerWorker.postMessage({ turn: "pause" });
+  };
+
+  return (
+    <Button
+      className="bg-green-400 dark:bg-green-400 hover:cursor-pointer [&>svg]:mr-2 text-black"
+      onClick={() => {
+        stopWebWorkerTime();
+        setIsRunning(false);
+      }}
+    >
+      <PauseIcon />
+      <p className="text-bold">Pausar</p>
+    </Button>
+  );
+}
+
+function ResetButton() {
+  const { setIsRunning } = useSessionContext();
+
+  const worker = useWorker(createWorker);
+
+  const resetWebWorkerTimer = async () => {
+    timerWorker.postMessage({ turn: "off" });
+    worker.Stop();
+
+    const get_time = await worker.GetTime();
+
+    newTimeInList(get_time);
+  };
+
+  return (
+    <Button
+      className="bg-gray-600 dark:bg-gray-400 hover:cursor-pointer flex items-center justify-center [&>svg]:mr-2 text-black"
+      onClick={() => {
+        resetWebWorkerTimer();
+        setIsRunning(false);
+      }}
+    >
+      <Undo2Icon />
+      <p className="text-bold">Redefinir</p>
+    </Button>
   );
 }
 
