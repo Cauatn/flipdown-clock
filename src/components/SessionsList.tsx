@@ -14,9 +14,15 @@ import { useSessionContext } from "@/contexts/SessionContext/Session-Context";
 function SessionsList() {
   const { isModalOpen, setIsModalOpen } = useSessionContext();
 
+  function formatTime(seconds: number) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}min`;
+  }
+
   return (
     <Drawer open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      <DrawerContent className="max-w-80 h-full p-4 space-y-4">
+      <DrawerContent className="max-w-[40%] h-full p-4 space-y-4">
         <div>
           <h1 className="text-lg">Sessões</h1>
           <p className="text-sm">
@@ -36,7 +42,7 @@ function SessionsList() {
               (element: any, index: number) => (
                 <TableRow key={index}>
                   <TableCell>{element.date}</TableCell>
-                  <TableCell>{Math.floor(element.time / 3600)} h</TableCell>
+                  <TableCell>{formatTime(element.time)}</TableCell>
                   <TableCell>
                     <button
                       onClick={(_e) => {
