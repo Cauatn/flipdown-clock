@@ -26,8 +26,7 @@ function App() {
 }
 
 function Layout() {
-  const { isFullScreen, handle, reportChange, setIsModalOpen } =
-    useSessionContext();
+  const { isFullScreen, handle, reportChange } = useSessionContext();
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

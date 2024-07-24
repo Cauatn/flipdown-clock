@@ -38,7 +38,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function Dashboard() {
-  const [timeRange, setTimeRange] = useState("90d");
+  const [timeRange] = useState("90d");
 
   const filteredData = chartData.filter((item: any) => {
     const date = new Date(item.date);

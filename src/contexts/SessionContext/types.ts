@@ -6,5 +6,4 @@ export type ISessionContext = {
   reportChange: (state: any) => void;
   handle: any;
   isModalOpen: boolean;
-  setIsModalOpen: (value: boolean) => void;
 };
