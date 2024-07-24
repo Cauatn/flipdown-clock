@@ -1,6 +1,6 @@
 export function newTimeInList(time: number) {
   const new_element = {
-    date: new Date().toDateString(),
+    date: new Date(),
     time: time,
   };
 

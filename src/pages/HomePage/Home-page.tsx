@@ -19,7 +19,7 @@ import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 import worker_script from "../../js/worker-script.js";
 import { useEffect } from "react";
 import SessionsList from "@/components/SessionsList.js";
-import { newTimeInList } from "@/hooks/new-time.js";
+import { newTimeInList } from "@/hooks/new-time.ts";
 
 ("./worker-script.js");
 
@@ -74,7 +74,6 @@ function Homepage() {
         <CardFooter className="space-x-2 flex justify-end h-fit px-0">
           {!isRunning ? <InitButton /> : <PauseButton />}
           <ResetButton />
-          <SessionsList />
         </CardFooter>
       </Card>
     </main>

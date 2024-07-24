@@ -7,8 +7,8 @@ import { ModeToggle } from "./components/mode-toggle";
 import { Button } from "./components/ui/button";
 import { useSessionContext } from "./contexts/SessionContext/Session-Context";
 import { FullScreen } from "react-full-screen";
-import Pomodoro from "./components/Pomodoro";
-import { Flower, List, Sprout } from "lucide-react";
+import Dashboard from "./components/DashBoard";
+import { ChartBarStacked, Home } from "lucide-react";
 import StatusPage from "./pages/StatusPage/Status-Page";
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Homepage />} />
-          <Route path="/pomodoro" element={<Pomodoro />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/status" element={<StatusPage />} />
         </Route>
       </Routes>
@@ -39,36 +39,28 @@ function Layout() {
         <div className="flex flex-col h-screen justify-between">
           <header className="justify-end sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-row items-center p-2">
             {!isFullScreen ? (
-              <div className="flex space-x-3 mx-2">
-                <a href="/" className="hidden">
+              <div className="flex space-x-3 mx-2 w-full">
+                <a href="/">
                   <Button
-                    disabled
-                    className="text-base font-bold size-10"
-                    variant="outline"
+                    className="text-base font-bold size-10 border"
+                    variant="ghost"
                   >
-                    <Flower className="absolute size-5 dark:rotate-0 dark:scale-100 " />
+                    <Home className="absolute size-5 dark:rotate-0 dark:scale-100 " />
                     <span className="sr-only">Status page</span>
                   </Button>
                 </a>
-                <a href="/" className="hidden">
-                  <Button
-                    disabled
-                    className="text-base font-bold size-10"
-                    variant="outline"
-                  >
-                    <Sprout className="absolute size-5 dark:rotate-0 dark:scale-100 " />
-                    <span className="sr-only">Pomodoro Page</span>
-                  </Button>
-                </a>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="border"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <List className="h-[1.2rem] w-[1.2rem]" />
-                </Button>
-                <ModeToggle />
+                <div className="flex space-x-3 mx-2 w-full items-center justify-end">
+                  <a href="/dashboard">
+                    <Button
+                      className="text-base font-bold size-10 border"
+                      variant="ghost"
+                    >
+                      <ChartBarStacked className="absolute size-5 dark:rotate-0 dark:scale-100 " />
+                      <span className="sr-only">Dashboard Page</span>
+                    </Button>
+                  </a>
+                  <ModeToggle />
+                </div>
               </div>
             ) : null}
           </header>
