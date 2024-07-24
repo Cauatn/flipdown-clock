@@ -5,5 +5,4 @@ export type ISessionContext = {
   setisFullscreen: (value: boolean) => void;
   reportChange: (state: any) => void;
   handle: any;
-  isModalOpen: boolean;
 };
