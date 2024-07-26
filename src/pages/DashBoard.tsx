@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/chart";
 import { useState } from "react";
 import { formatDate } from "@/hooks/format-date";
-import SessionsList from "./SessionsList";
+import SessionsList from "../components/SessionsList";
+import { filterChartData } from "@/hooks/filter-chart-data";
 
 const data = JSON.parse(localStorage.getItem("time_list") ?? "[]");
 
@@ -26,16 +27,6 @@ const chartData = data.map((item: any) => {
     time: item.time,
   };
 });
-
-function getChartDataStatus(
-  chartData: { date: string; time: number }[]
-): { color: string }[] {
-  return chartData.map((item) => {
-    return {
-      color: item.time ? "bg-emerald-600" : "bg-red-600",
-    };
-  });
-}
 
 const chartConfig = {
   views: {
@@ -49,20 +40,6 @@ const chartConfig = {
 
 function Dashboard() {
   const [timeRange] = useState(90);
-
-  function filterChartData(chartData: any[], timeRange: number): any[] {
-    return chartData.filter((item: any) => {
-      const date = new Date(item.date);
-      const now = new Date();
-
-      let daysToSubtract = 90;
-
-      daysToSubtract = timeRange;
-
-      now.setDate(now.getDate() - daysToSubtract);
-      return date >= now;
-    });
-  }
 
   return (
     <main className="py-2 px-4 flex justify-start flex-col space-y-8">

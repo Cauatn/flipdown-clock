@@ -3,23 +3,11 @@ let previousTimeBetweenDates;
 let time = 0;
 let started = false;
 let stoped = false;
-let startedPomodoro = false;
-let stopedPomodoro = false;
 let studyTime = 0;
-let isRest = false;
-
-import { StartRest } from "./components/Rest/scriptRest";
 
 export function Start() {
   started = true;
   console.log("Start");
-}
-
-export function StartPomodoro(time) {
-  startedPomodoro = true;
-  started = false;
-  studyTime = time;
-  console.log("Start Pomodoro");
 }
 
 export function Stop() {
@@ -45,18 +33,6 @@ setInterval(() => {
     if (!stoped) {
       time++;
       flipAllCards(time);
-    }
-  }
-
-  if (startedPomodoro) {
-    if (!stopedPomodoro && studyTime > 0) {
-      studyTime--;
-      console.log("asasdadsdadas");
-      flipAllCards(studyTime);
-    } else if (studyTime == 0 && !isRest) {
-      //StartRest(1200);
-      isRest = true;
-      console.log("Start Rest");
     }
   }
 }, 1000);

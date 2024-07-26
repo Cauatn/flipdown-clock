@@ -3,9 +3,9 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "../../components/ui/card.js";
-import Clock from "../../components/Clock.js";
-import { Button } from "../../components/ui/button.js";
+} from "@/components/ui/card.js";
+import Clock from "@/components/Clock.js";
+import { Button } from "@/components/ui/button.js";
 import {
   Maximize2,
   Minimize2,
@@ -16,14 +16,14 @@ import {
 import { useSessionContext } from "@/contexts/SessionContext/Session-Context.js";
 import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 
-import worker_script from "../../js/worker-script.js";
+import worker_script from "@/js/worker-script.js";
 import { useEffect } from "react";
 import { newTimeInList } from "@/hooks/new-time.ts";
 
 ("./worker-script.js");
 
 const timerWorker = new Worker(worker_script);
-const createWorker = createWorkerFactory(() => import("../../js/worker.js"));
+const createWorker = createWorkerFactory(() => import("@/js/worker.js"));
 
 function Homepage() {
   const { isFullScreen, setisFullscreen, isRunning, handle } =
