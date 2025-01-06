@@ -24,13 +24,13 @@ const data = JSON.parse(localStorage.getItem("time_list") ?? "[]");
 const chartData = data.map((item: any) => {
   return {
     date: formatDate(new Date(item.date)),
-    time: item.time,
+    time: (item.time / 60).toFixed(2),
   };
 });
 
 const chartConfig = {
   views: {
-    label: "tempo (segundos)",
+    label: "tempo (minutos)",
   },
   time: {
     label: "time",
