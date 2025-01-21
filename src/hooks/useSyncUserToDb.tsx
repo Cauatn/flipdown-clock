@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { db } from "@/db/db";
-import { usersTable, studyTimesTable } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { usersTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { saveStudyTime } from "@/hooks/saveStudyTime";
 
 function useSyncUserToDb() {
@@ -18,21 +18,15 @@ function useSyncUserToDb() {
         .from(usersTable)
         .where(eq(usersTable.clerkId, user.id));
 
-      let userIdInDb;
-
       if (!existingUser.length) {
         // User does not exist; insert into the database
-        const insertedUser = await db
+        await db
           .insert(usersTable)
           .values({
             clerkId: user.id,
             email: user.emailAddresses[0]?.emailAddress || "unknown@email.com",
           })
           .returning({ id: usersTable.id });
-
-        userIdInDb = insertedUser[0].id;
-      } else {
-        userIdInDb = existingUser[0].id;
       }
 
       // Check for existing data in localStorage under "time_list"
