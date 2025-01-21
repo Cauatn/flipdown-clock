@@ -9,12 +9,31 @@ import {
 
 import { Trash2 } from "lucide-react";
 import { formatDate } from "@/hooks/format-date";
+import { removeStudyTime } from "@/hooks/removeStudyTime";
+import { useEffect, useState } from "react";
 
-function SessionsList() {
+function SessionsList({ data }: { data: any }) {
+  const [sessions, setSessions] = useState<
+    { id: number; date: string; time: number }[]
+  >([]);
+
+  useEffect(() => {
+    setSessions(data);
+  }, [data]);
+
   function formatTime(seconds: number) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     return `${hours}h ${minutes}min`;
+  }
+
+  async function handleRemove(id: number) {
+    const result = await removeStudyTime(id);
+    if (result.success) {
+      setSessions((prev) => prev.filter((session) => session.id !== id));
+    } else {
+      alert("Erro ao remover a sessão.");
+    }
   }
 
   return (
@@ -35,36 +54,21 @@ function SessionsList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {JSON.parse(localStorage.getItem("time_list") ?? "[]").map(
-            (element: any, index: number) => (
-              <TableRow key={index}>
-                <TableCell className="w-[33%] text-left">
-                  {formatDate(new Date(element.date))}
-                </TableCell>
-                <TableCell className="w-[33%] text-center">
-                  {formatTime(element.time)}
-                </TableCell>
-                <TableCell className="w-[33%] text-right">
-                  <button
-                    onClick={(_e) => {
-                      const list = localStorage.getItem("time_list");
-                      if (list) {
-                        const new_list = JSON.parse(list);
-                        new_list.splice(index, 1);
-                        localStorage.setItem(
-                          "time_list",
-                          JSON.stringify(new_list)
-                        );
-                        window.location.reload();
-                      }
-                    }}
-                  >
-                    <Trash2 className="size-5" />
-                  </button>
-                </TableCell>
-              </TableRow>
-            )
-          )}
+          {sessions.map((session) => (
+            <TableRow key={session.id}>
+              <TableCell className="w-[33%] text-left">
+                {formatDate(new Date(session.date))}
+              </TableCell>
+              <TableCell className="w-[33%] text-center">
+                {formatTime(session.time)}
+              </TableCell>
+              <TableCell className="w-[33%] text-right">
+                <button onClick={() => handleRemove(session.id)}>
+                  <Trash2 className="size-5" />
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

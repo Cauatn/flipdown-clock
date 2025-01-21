@@ -14,19 +14,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useState } from "react";
-import { formatDate } from "@/hooks/format-date";
+import { useEffect, useState } from "react";
 import SessionsList from "../components/SessionsList";
 import { filterChartData } from "@/hooks/filter-chart-data";
-
-const data = JSON.parse(localStorage.getItem("time_list") ?? "[]");
-
-const chartData = data.map((item: any) => {
-  return {
-    date: formatDate(new Date(item.date)),
-    time: (item.time / 3600).toFixed(2),
-  };
-});
+import { useUser } from "@clerk/clerk-react";
+import { fetchStudyTimes } from "@/hooks/fetchStudyTimes";
 
 const chartConfig = {
   views: {
@@ -39,7 +31,22 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function Dashboard() {
+  const { user } = useUser();
+  const [data, setData] = useState<{ date: string; time: number }[]>([]);
   const [timeRange] = useState(90);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const fetchData = async () => {
+      const studyTimes = await fetchStudyTimes(user.id);
+      setData(studyTimes);
+    };
+
+    fetchData();
+  }, [user?.id]);
+
+  const chartData = filterChartData(data, timeRange);
 
   return (
     <main className="py-2 px-4 flex justify-start flex-col space-y-8">
@@ -53,7 +60,7 @@ function Dashboard() {
             <div className="flex items-center justify-center space-x-2">
               <span className="text-3xl font-bold">
                 {filterChartData(data, 7).reduce((acc: number, item: any) => {
-                  return Number((acc + item.time / 3600).toFixed(2));
+                  return Number(acc + item.time);
                 }, 0)}
               </span>
               <span className="text-lg">horas</span>
@@ -61,20 +68,23 @@ function Dashboard() {
           </CardContent>
         </Card>
       </div>
-      <ChartData data={filterChartData(chartData, timeRange)} />
-      <SessionsList />
+      <ChartData data={chartData} />
+      {user ? (
+        <SessionsList data={data} />
+      ) : (
+        <>Por favor cadastre-se para exibirmos seus estudos</>
+      )}
     </main>
   );
 }
 
-function ChartData({ data = [] }: { data: { date: string; time: number }[] }) {
+function ChartData({ data = [] }: { data: { date: string; time: string }[] }) {
   return (
     <Card className="w-full h-fit">
       <CardHeader>
         <CardTitle>Gráfico de tempo</CardTitle>
         <CardDescription>
-          Gráfico para você ter um controle maior sobre o tempo que você está se
-          esforçando :)
+          Controle o tempo que você está se esforçando :)
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -83,7 +93,6 @@ function ChartData({ data = [] }: { data: { date: string; time: number }[] }) {
           className="aspect-auto h-[250px] w-full"
         >
           <BarChart
-            accessibilityLayer
             data={data}
             margin={{
               left: 12,
@@ -94,10 +103,6 @@ function ChartData({ data = [] }: { data: { date: string; time: number }[] }) {
             <YAxis domain={[0, "dataMax"]} />
             <XAxis
               dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value);
                 date.setDate(date.getDate() + 1);
@@ -122,19 +127,10 @@ function ChartData({ data = [] }: { data: { date: string; time: number }[] }) {
                 />
               }
             />
-            <Bar dataKey={"time"} fill={"hsl(var(--chart-2))"} />
+            <Bar dataKey="time" fill="hsl(var(--chart-2))" />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="h-fit max-h-10">
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Historico recente <TrendingUp className="h-4 w-4" />
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 }
