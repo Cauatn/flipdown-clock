@@ -19,6 +19,8 @@ import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 import worker_script from "@/js/worker-script.js";
 import { useEffect } from "react";
 import { newTimeInList } from "@/hooks/new-time.ts";
+import { useUser } from "@clerk/clerk-react";
+import { saveStudyTime } from "@/hooks/saveStudyTime";
 
 ("./worker-script.js");
 
@@ -30,6 +32,8 @@ function Homepage() {
     useSessionContext();
 
   const worker = useWorker(createWorker);
+
+  const { user } = useUser();
 
   useEffect(() => {
     const last_time = localStorage.getItem("last_time");
@@ -45,6 +49,22 @@ function Homepage() {
       }
     };
   }, []);
+
+  const handleSaveTime = async () => {
+    if (!user) return alert("Você não está autenticado!");
+
+    const date = new Date();
+
+    const last_time = localStorage.getItem("last_time");
+
+    try {
+      await saveStudyTime(user.id, date, Number(last_time));
+      console.log("Tempo de estudo salvo com sucesso!");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao salvar o tempo de estudo.");
+    }
+  };
 
   return (
     <main className="space-y-4 h-full py-2 px-4">
@@ -72,7 +92,7 @@ function Homepage() {
         </CardContent>
         <CardFooter className="space-x-2 flex justify-end h-fit px-0">
           {!isRunning ? <InitButton /> : <PauseButton />}
-          <ResetButton />
+          <ResetButton onClick={handleSaveTime} />
         </CardFooter>
       </Card>
     </main>
@@ -124,7 +144,11 @@ function PauseButton() {
   );
 }
 
-function ResetButton() {
+interface ResetButtonProps {
+  onClick?: () => void;
+}
+
+function ResetButton({ onClick }: ResetButtonProps) {
   const { setIsRunning } = useSessionContext();
 
   const worker = useWorker(createWorker);
@@ -144,6 +168,10 @@ function ResetButton() {
       onClick={() => {
         resetWebWorkerTimer();
         setIsRunning(false);
+
+        if (onClick) {
+          onClick();
+        }
       }}
     >
       <Undo2Icon />
