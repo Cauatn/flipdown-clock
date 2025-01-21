@@ -1,8 +1,17 @@
 import { ChartBarStacked, Home } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
+import {
+  SignedOut,
+  SignInButton,
+  SignedIn,
+  UserButton,
+} from "@clerk/clerk-react";
+import useSyncUserToDb from "@/hooks/useSyncUserToDb";
 
 export function Header({ isFullScreen }: { isFullScreen: boolean }) {
+  useSyncUserToDb();
+
   return (
     <header className="justify-end sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-row items-center p-2">
       {!isFullScreen ? (
@@ -27,6 +36,14 @@ export function Header({ isFullScreen }: { isFullScreen: boolean }) {
               </Button>
             </a>
             <ModeToggle />
+            <div className="inline-flex items-center">
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </div>
         </div>
       ) : null}
