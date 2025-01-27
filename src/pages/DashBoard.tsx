@@ -34,14 +34,24 @@ function Dashboard() {
   const [timeRange] = useState(90);
 
   useEffect(() => {
+    let isMounted = true;
+
     if (!user?.id) return;
 
     const fetchData = async () => {
-      const studyTimes = await fetchStudyTimes(user.id);
-      setData(studyTimes);
+      try {
+        const studyTimes = await fetchStudyTimes(user.id);
+        if (isMounted) setData(studyTimes);
+      } catch (error) {
+        console.error("Error fetching study times", error);
+      }
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [user?.id]);
 
   const chartData = filterChartData(data, timeRange);
@@ -77,6 +87,10 @@ function Dashboard() {
 }
 
 function ChartData({ data = [] }: { data: { date: string; time: string }[] }) {
+  if (!data || data.length === 0) {
+    return <div>No data available</div>;
+  }
+
   return (
     <Card className="w-full h-fit">
       <CardHeader>
