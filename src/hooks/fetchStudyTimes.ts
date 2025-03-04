@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { studyTimesTable, usersTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function fetchStudyTimes(userId: string) {
   try {
@@ -12,7 +12,8 @@ export async function fetchStudyTimes(userId: string) {
       })
       .from(studyTimesTable)
       .innerJoin(usersTable, eq(usersTable.id, studyTimesTable.userId))
-      .where(eq(usersTable.clerkId, userId));
+      .where(eq(usersTable.clerkId, userId))
+      .orderBy(desc(studyTimesTable.date));
 
     return data.map((item) => ({
       id: item.id,
